@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@pages/*": ["pages/*"],
+      "@utils/*": ["utils/*"],
+      "@config/*": ["config/*"]
+    },
+    "types": ["node", "@cucumber/cucumber", "@playwright/test"]
+  },
+  "include": [
+    "features/**/*.ts",
+    "step-definitions/**/*.ts",
+    "pages/**/*.ts",
+    "utils/**/*.ts",
+    "tests/**/*.ts"
+  ]
+} 

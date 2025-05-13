@@ -1,0 +1,37 @@
+{
+  "name": "sauce-demo-playwright-e2e",
+  "version": "1.0.0",
+  "description": "E2E Testing framework for SauceDemo using Playwright + Cucumber",
+  "scripts": {
+    "test": "cucumber-js",
+    "test:headed": "cross-env PWDEBUG=1 cucumber-js",
+    "test:parallel": "cucumber-js --profile parallel",
+    "test:ci": "cucumber-js --profile ci",
+    "report": "playwright show-report test-report",
+    "report:cucumber": "start reports/cucumber-report.html",
+    "pretest": "rimraf \"reports\" && rimraf \"test-results\" && rimraf \"test-report\" && mkdir reports test-results test-report",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix"
+  },
+  "keywords": [
+    "playwright",
+    "cucumber",
+    "typescript",
+    "e2e-testing"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@cucumber/cucumber": "^9.5.1",
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^20.8.0",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "@typescript-eslint/parser": "^6.7.0",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.3.1",
+    "eslint": "^8.49.0",
+    "rimraf": "^5.0.5",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  }
+}
