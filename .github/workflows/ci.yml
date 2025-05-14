@@ -39,8 +39,7 @@ jobs:
 
     - name: Upload test results
       if: always()
-      continue-on-error: true
-      uses: actions/upload-artifact@v3@cd8c06c81bc5db7f48b4db2a5de0e37201e4d0f9
+      uses: actions/upload-artifact@v4
       with:
         name: test-results
         path: |
