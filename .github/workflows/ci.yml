@@ -1,0 +1,72 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Install Playwright browsers
+      run: npx playwright install --with-deps chromium webkit
+
+    - name: Create env file
+      run: |
+        echo "USERNAME=standard_user" >> .env
+        echo "PASSWORD=secret_sauce" >> .env
+        echo "HEADLESS=true" >> .env
+        echo "CI=true" >> .env
+
+    - name: Run tests
+      run: npm run test:ci
+      env:
+        CI: true
+
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: |
+          test-results/
+          test-report/
+          reports/
+        retention-days: 30
+
+    - name: Send email with test report
+      if: always()
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: SauceDemo E2E Test Results
+        to: yashvee.ranjan@gmail.com
+        from: GitHub Actions
+        body: |
+          Test results from the latest run on ${{ github.repository }}
+          
+          Branch: ${{ github.ref }}
+          Commit: ${{ github.sha }}
+          
+          See attached test report and artifacts in the GitHub Actions run:
+          ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        attachments: |
+          test-report/index.html
+          reports/cucumber-report.html 
