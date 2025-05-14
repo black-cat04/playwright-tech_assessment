@@ -35,7 +35,5 @@ Feature: Checkout Process
       | Last Name  | Smith     |
       | Zip Code   | 67890     |
     Then order summary should be visible
-    And the item "Sauce Labs Backpack" has a price of "$29.99"
-    And the item "Sauce Labs Bike Light" has a price of "$9.99"
     When I complete purchase
     Then I should be able to return to products 

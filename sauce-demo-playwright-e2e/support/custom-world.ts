@@ -13,6 +13,7 @@ export interface ICustomWorld extends World {
   browser: Browser | null;
   context: BrowserContext | null;
   page: Page | null;
+  productsPage: ProductsPage | null;
   currentPage: LoginPage | ProductsPage | CartPage | CheckoutPage | null;
   init(): Promise<void>;
   teardown(): Promise<void>;
@@ -23,6 +24,7 @@ export class CustomWorld extends World implements ICustomWorld {
   browser: Browser | null = null;
   context: BrowserContext | null = null;
   page: Page | null = null;
+  productsPage: ProductsPage | null = null;
   currentPage: LoginPage | ProductsPage | CartPage | CheckoutPage | null = null;
   pickle: { name: string };
 
@@ -35,14 +37,12 @@ export class CustomWorld extends World implements ICustomWorld {
     const browserType = process.env.BROWSER === 'webkit' ? webkit : chromium;
     this.browser = await browserType.launch({
       headless: process.env.HEADLESS === 'true',
-      args: ['--start-maximized']
+      args: ['--start-maximized'],
     });
 
     this.context = await this.browser.newContext({
       viewport: null,
-      recordVideo: {
-        dir: 'test-results/videos'
-      }
+      recordVideo: { dir: 'test-results/videos' },
     });
 
     this.page = await this.context.newPage();
@@ -52,12 +52,13 @@ export class CustomWorld extends World implements ICustomWorld {
     if (this.page) await this.page.close();
     if (this.context) await this.context.close();
     if (this.browser) await this.browser.close();
-    
+
     this.page = null;
     this.context = null;
     this.browser = null;
     this.currentPage = null;
+    this.productsPage = null;
   }
 }
 
-setWorldConstructor(CustomWorld); 
+setWorldConstructor(CustomWorld);
