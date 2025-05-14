@@ -20,12 +20,15 @@ Given('I am on the products page', async function(this: CustomWorld) {
 Given('I am logged in as a standard user', async function(this: CustomWorld) {
   loginPage = new LoginPage(this.page);
   await loginPage.navigate();
+  await this.page.waitForLoadState('load');
+  await this.page.waitForSelector('[data-test="username"]', { state: 'visible' });
   await loginPage.login('standard_user', 'secret_sauce');
 });
 
 // Common verification steps
 Then('the item {string} has a price of {string}', async function(itemName: string, expectedPrice: string) {
-  const price = await this.currentPage?.getItemPrice(itemName);
+  await this.page.waitForSelector('.inventory_list', { state: 'visible', timeout: 15000 });
+  const price = await this.currentPage?.getProductPrices(itemName);
   expect(price, `Price for "${itemName}" should be ${expectedPrice}`).toBe(expectedPrice);
 });
 
